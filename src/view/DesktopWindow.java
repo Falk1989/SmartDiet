@@ -568,7 +568,17 @@ public class DesktopWindow extends JFrame implements Observer {
 				logSistema.setTable(d, c);
 				logSistema.getTable().repaint();
 				 
-				logSistema.getTable().setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+				// settaggio margini tabella tabella
+				
+				logSistema.getTable().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+					TableColumn column2 = logSistema.getTable().getColumnModel().getColumn(1);
+				column2.setPreferredWidth(200);
+				TableColumn column3 = logSistema.getTable().getColumnModel().getColumn(2);
+				column3.setPreferredWidth(120);
+				TableColumn column4= logSistema.getTable().getColumnModel().getColumn(3);
+				column4.setPreferredWidth(120);;
+	    		TableColumn column5 = logSistema.getTable().getColumnModel().getColumn(logSistema.getTable().getColumnCount()-1);
+				column5.setPreferredWidth(logSistema.getScrollPane().getWidth());
 				
 				
 				

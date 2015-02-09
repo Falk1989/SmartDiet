@@ -72,6 +72,7 @@ public class LogSistema extends JInternalFrame {
 	private Vector<String> colonne; //dbInterface.getColonneByLog(); //vettore che ospiterà le colenne
 
 
+
 	/**
 	 * Create the frame.
 	 */
@@ -218,6 +219,12 @@ public class LogSistema extends JInternalFrame {
 
 	public JTable getTable() {
 		return table;
+	}
+
+
+
+	public JScrollPane getScrollPane() {
+		return scrollPane;
 	}
 
 
