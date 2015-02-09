@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Vector;
+
+import javax.tools.JavaCompiler;
 
 import view.DesktopWindow;
 
@@ -1135,11 +1138,13 @@ public class DataHandler {
 			// ipotetiche query
 			String send = "insert into Pazienti values('";
 			int counter = 38;
-			LocalDateTime now = LocalDateTime.now();
-			Date date = new Date(now.getDayOfMonth(), now.getMonthValue(),
-					now.getYear());
-
-			statement.executeUpdate("insert into Visita values('" + date
+			
+			LocalDateTime date = LocalDateTime.now();
+			GregorianCalendar g = new GregorianCalendar(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+			java.util.Date u = g.getTime();
+			
+			
+			statement.executeUpdate("insert into Visita values('" +  new java.sql.Date (u.getTime())
 					+ "','" + x.pop() + "','" + x.pop() + "','" + dataNascita
 					+ "'," + età + ",'" + x.pop() + "','" + sesso + "','"
 					+ x.pop() + "','" + attività + "','" + x.pop() + "','"

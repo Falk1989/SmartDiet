@@ -41,6 +41,7 @@ import java.awt.event.FocusEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Stack;
@@ -138,8 +139,10 @@ public class PrimaVisita extends JInternalFrame {
 		comboGiorno = new JComboBox();
 		comboMese = new JComboBox();
 		comboAnno = new JComboBox();
+		comboAnno.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 16));
 		CFText = new JTextField();
 		dataVisitaText = new JTextField();
+		dataVisitaText.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 16));
 		alta = new JRadioButton("Alta");
 		bassa = new JRadioButton("Bassa");
 		media = new JRadioButton("Media");
@@ -244,12 +247,12 @@ public class PrimaVisita extends JInternalFrame {
 		caricaComboMesi();
 		comboMese.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN,
 				16));
-		comboMese.setBounds(284, 160, 56, 30);
+		comboMese.setBounds(284, 160, 122, 30);
 		tabGeneralit‡Clinica.add(comboMese);
 
 		JLabel label_1 = new JLabel("/");
 		label_1.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 18));
-		label_1.setBounds(352, 160, 20, 27);
+		label_1.setBounds(418, 156, 20, 27);
 		tabGeneralit‡Clinica.add(label_1);
 
 		comboAnno.setModel(new DefaultComboBoxModel(new String[] { "1950",
@@ -270,7 +273,7 @@ public class PrimaVisita extends JInternalFrame {
 				"2063", "2064", "2065", "2066", "2067", "2068", "2069", "2070",
 				"2071", "2072", "2073", "2074", "2075", "2076", "2077", "2078",
 				"2079", "2080" }));
-		comboAnno.setBounds(373, 160, 65, 30);
+		comboAnno.setBounds(445, 160, 65, 30);
 		tabGeneralit‡Clinica.add(comboAnno);
 
 		JLabel CFLabel = new JLabel("CF:");
@@ -303,10 +306,11 @@ public class PrimaVisita extends JInternalFrame {
 		dataVisitaText.setBounds(161, 356, 192, 22);
 		tabGeneralit‡Clinica.add(dataVisitaText);
 		dataVisitaText.setColumns(10);
-		LocalDateTime now = LocalDateTime.now();
-		Date date = new Date(now.getDayOfMonth(), now.getMonthValue(),
-				now.getYear());
-		dataVisitaText.setText(date.toString());
+		LocalDateTime dateNow = LocalDateTime.now();
+		GregorianCalendar g = new GregorianCalendar(dateNow.getYear(), dateNow.getMonthValue(), dateNow.getDayOfMonth());
+		java.util.Date u = g.getTime();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		dataVisitaText.setText(dateNow.format(formatter));
 		dataVisitaText.setFocusable(false);
 
 		// TAB GENERALIT‡ E
