@@ -192,7 +192,7 @@ public class PrimaVisita extends JInternalFrame {
 		JLabel labelNome = new JLabel("Nome:");
 		labelNome.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN,
 				16));
-		labelNome.setBounds(68, 57, 65, 33);
+		labelNome.setBounds(10, 58, 65, 33);
 		tabGeneralit‡Clinica.add(labelNome);
 
 		JLabel labelCognome = new JLabel("Cognome:");
