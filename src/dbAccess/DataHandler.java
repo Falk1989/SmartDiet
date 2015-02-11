@@ -744,7 +744,7 @@ public class DataHandler {
 				
 				
 			}
-						
+			
 			//scrittura del LOG
 			//writeLog(connection, statement, query);
 			
