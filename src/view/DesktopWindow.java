@@ -514,12 +514,22 @@ public class DesktopWindow extends JFrame implements Observer {
 				primaVisita.reset();
 
 				// RICARICO
-				// prima di tutto la variabiel Vector<Vector<?>> che ospita il
-				// risultato della query select * from LogSistema
-				// poi ricarico (refresh della tabella)
+				//ricarico i pazienti nella combo
+				Vector<String> appoggio = dbInterface.getNomiPazienti(dbInterface.getCodDottByNickName(activeUser.getNickName()));
+
+
+				for (int i = 0; i < appoggio.size(); i++) {
+						primaVisita.getComboPazienti().addItem(
+								(appoggio).get(i));
+					}// fine for
+				
+				
 				
 				//riabilito i pulsanti di scelta
-				
+				primaVisita.getBtnPrimaVisita().setEnabled(true);
+				primaVisita.getBtnSuccessiveVisite().setEnabled(true);
+				primaVisita.getBtnConfermaESalva().setEnabled(false);
+				primaVisita.getPanelSuper().setVisible(false);
 
 				// rendo visibile la JinternalFrame
 				primaVisita.setVisible(true);

@@ -1362,7 +1362,7 @@ public class DataHandler {
 			String insert = null;
 			while (rs.next()) {
 
-				insert = (rs.getString("Cognome")).concat("_").concat(
+				insert = (rs.getString("Cognome")).concat(" ").concat(
 						rs.getString("Nome"));
 				// result.add(insert);
 				result.addElement(insert);

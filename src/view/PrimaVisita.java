@@ -49,6 +49,8 @@ import java.util.GregorianCalendar;
 import java.util.Stack;
 import javax.swing.border.TitledBorder;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class PrimaVisita extends JInternalFrame {
 	private DbInterface d = new DbInterface();
@@ -106,6 +108,11 @@ public class PrimaVisita extends JInternalFrame {
 	private JButton btnConfermaESalva;
 	private JButton btnPrimaVisita;
 	private JPanel panelBotton;
+	private JPanel panelSuper;
+	public JPanel getPanelSuper() {
+		return panelSuper;
+	}
+
 	private JButton btnSuccessiveVisite;
 	private JComboBox comboPazienti;
 
@@ -135,7 +142,7 @@ public class PrimaVisita extends JInternalFrame {
 		java.util.Date u = g.getTime();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		
-		JPanel panelSuper = new JPanel();
+		panelSuper = new JPanel();
 		panelSuper.setVisible(false);
 		panelSuper.setEnabled(false);
 		panelSuper.setBounds(209, 11, 847, 472);
@@ -831,6 +838,7 @@ public class PrimaVisita extends JInternalFrame {
 		panelPaziente.setLayout(null);
 		
 		comboPazienti = new JComboBox();
+		comboPazienti.setModel(new DefaultComboBoxModel(new String[] {""}));
 		comboPazienti.setEnabled(false);
 		comboPazienti.setBounds(10, 25, 169, 37);
 		panelPaziente.add(comboPazienti);
@@ -854,7 +862,6 @@ public class PrimaVisita extends JInternalFrame {
 		
 		btnSuccessiveVisite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelSuper.setVisible(true);
 				btnConfermaESalva.setEnabled(true);
 				btnPrimaVisita.setEnabled(false);
 				btnSuccessiveVisite.setEnabled(false);
@@ -864,8 +871,22 @@ public class PrimaVisita extends JInternalFrame {
 			}
 		});
 	
+			
+		comboPazienti.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				panelSuper.setVisible(true);
+				//carica letab con i dati dell'ultima visita delpaziente cosi da poterlo 
+				//sovrascrivere con le modifiche al suo stato rispetto allaprima visita
+			}
+		});
+		
 	}//fine costruttore
 	
+
+	public JComboBox getComboPazienti() {
+		return comboPazienti;
+	}
+
 
 	public JButton getBtnConfermaESalva() {
 		return btnConfermaESalva;
