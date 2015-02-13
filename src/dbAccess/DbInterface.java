@@ -161,7 +161,29 @@ public class DbInterface{
 	}
 
 	
-	
+	public boolean registraPaziente(String profilo, String user,
+			 String codFiscale,
+			 String nome,
+			 String cognome,
+			 Date dataNascita,
+			 int sesso,
+			 String mail,
+			 int codDottore,
+			 String level, 
+			 String pwd) {
+		boolean result = false;
+
+		try {
+			// .....
+			result = handler.registraPazienteOnDB(profilo, user,
+					codFiscale,nome, cognome, dataNascita,sesso,
+                    mail, codDottore, level,pwd);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 		
 	

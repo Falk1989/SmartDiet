@@ -345,6 +345,76 @@ public class DataHandler {
 		return result;
 
 	}
+	
+	
+	public boolean registraPazienteOnDB(String profilo, String user,
+			 String codFiscale,
+			 String nome,
+			 String cognome,
+			 Date dataNascita,
+			 int sesso,
+			 String mail,
+			 int codDottore,
+			 String level, 
+			 String pwd)
+			throws ClassNotFoundException {
+		boolean result = false;
+		// load the sqlite-JDBC driver using the current class loader
+		Class.forName("org.sqlite.JDBC");
+	
+		Connection connection = null;
+		try {
+			// create a database connection
+			connection = DriverManager
+					.getConnection("jdbc:sqlite:database\\smartDietDB.db");
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			// ------------------------------------------------------------------------
+
+			// ipotetiche query
+            String query1 = "insert into Pazienti values('"+codFiscale+"', '"+nome+"','"+cognome+
+            		"','"+dataNascita+"',"+sesso+",'"+mail+"',"+
+            		getCodDottByNickNameOnDB(user)+")";
+            // inserimento nella tabella Pazienti
+			statement.executeUpdate(query1);
+			
+			// inserimento nella tabella Users
+			String query2 = "insert into Users values('" + mail + "','"
+					+ pwd + "'," + getCodProfileByDescrOnDB(level) + ")";
+			statement.executeUpdate(query2);
+			
+
+			//scrittura del LOG
+//			statement.executeUpdate(writeLog(query1, profilo, user));
+//			statement.executeUpdate(writeLog(query2, profilo, user));
+			
+			
+			result = true;
+
+		} catch (SQLException e) {
+			// if the error message is "out of memory",
+			// it probably means no database file is found
+			System.err.println(e.getMessage());
+		} finally {
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				// connection close failed.
+				System.err.println(e);
+			}
+		}
+
+		return result;
+
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	public boolean verifyFirstAccessOnDB() throws ClassNotFoundException {
 		boolean result = false;
@@ -1118,6 +1188,44 @@ public class DataHandler {
 			String query = "select Password from Users where NickName = '" + user + "'";
 			rs = statement.executeQuery(query);
 				result = (rs.getString("Password"));
+				//scrittura del LOG
+				//writeLog(connection, statement, query);
+
+
+		} catch (SQLException e) {
+			// if the error message is "out of memory",
+			// it probably means no database file is found
+			System.err.println(e.getMessage());
+		} finally {
+			try {
+				if (connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				// connection close failed.
+				System.err.println(e);
+			}
+		}
+
+		return result;
+	}
+	
+	public int getCodDottoreByNickNameOnDB(String user)
+			throws ClassNotFoundException {
+		int result = -1;
+		// load the sqlite-JDBC driver using the current class loader
+		Class.forName("org.sqlite.JDBC");
+		ResultSet rs = null;
+		Connection connection = null;
+		try {
+			// create a database connection
+			connection = DriverManager
+					.getConnection("jdbc:sqlite:database\\smartDietDB.db");
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30); // set timeout to 30 sec.
+			// ------------------------------------------------------------------------
+			String query = "select d.CodDottore from dottori as d where d.NickName = '" + user + "'";
+			rs = statement.executeQuery(query);
+				result = (rs.getInt("CodDottore"));
 				//scrittura del LOG
 				//writeLog(connection, statement, query);
 

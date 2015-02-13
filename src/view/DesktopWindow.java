@@ -100,6 +100,9 @@ public class DesktopWindow extends JFrame implements Observer {
 	private InsertDottore insertDottore;
 	private UpdateDottore updateDottore;
 	private DeleteDottore deleteDottore;
+	
+	private InsertPaziente insertPaziente;
+	
 	private ScegliVisita scegliVisita;
 	private VisualizzaVisita visualizzaVisita;
 	private DietaPatientChoose dietaParientChoose;
@@ -112,6 +115,7 @@ public class DesktopWindow extends JFrame implements Observer {
 	private DbInterface dbInterface;
 	private JMenu menuVisite;
 	private JMenuItem itmScegliPaziente;
+	private JMenuItem mntmCreaVisita;
 
 	// --------------------------------------------------------------------------
 
@@ -141,20 +145,6 @@ public class DesktopWindow extends JFrame implements Observer {
 		insertAmministratore.importaDesktopWindow(this);
 
 		updateAmministratore = new UpdateAmministratore(); // gli
-		// passo
-		// il
-		// model
-		// che a
-		// mia
-		// volta
-		// ho
-		// ricevuto.
-		// se ho capito bene, quanod implemento il controller non glielo passo
-		// più perchè la sottofinestra non sarà più un osservatore in cui viene
-		// effettuata la modifica, ma il CONTROLLER della modifica. L'unico
-		// osservatore resterà la schermata principale che è quella che deve
-		// effettivamnte implentare il cambio di etichette quando riceve il
-		// messaggio che la modifica del model è avvenuta
 		updateAmministratore.importaDesktopWindow(this);
 
 		deleteAmministratore = new DeleteAmministratore();
@@ -183,6 +173,9 @@ public class DesktopWindow extends JFrame implements Observer {
 
 		logSistema = new LogSistema();
 		logSistema.importaDesktopWindow(this);
+		
+		insertPaziente = new InsertPaziente();
+		insertPaziente.importaDesktopWindow(this);
 
 		// ----------------------------------------------------------------------------
 		// disegno la finestra
@@ -510,6 +503,36 @@ public class DesktopWindow extends JFrame implements Observer {
 			}
 		});
 
+		mntmCreaVisita.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// disabilito la voce di logout dal menu file
+				itemLogout.setEnabled(false);
+
+				// AZZERO i campi della jinternalframe perchè all'ultimo acceso
+				// essa è stata semplicemnte nascosta per velocizzare
+				// l'applicazione
+				primaVisita.reset();
+
+				// RICARICO
+				// prima di tutto la variabiel Vector<Vector<?>> che ospita il
+				// risultato della query select * from LogSistema
+				// poi ricarico (refresh della tabella)
+				
+				//riabilito i pulsanti di scelta
+				
+
+				// rendo visibile la JinternalFrame
+				primaVisita.setVisible(true);
+
+				// posizionamento della finestra al centro
+				// della DESKTOPWINDOW
+				primaVisita.setLocation(
+						(desktopPane.getSize().width - primaVisita.getSize().width) / 2,
+						(desktopPane.getSize().height - primaVisita.getSize().height) / 2);
+			}
+		});
+		
+		
 		// pazienti------------------------------------------------------------------
 		itmScegliPaziente.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -634,21 +657,46 @@ public class DesktopWindow extends JFrame implements Observer {
 				// AZZERO i campi della jinternalframe perchè all'ultimo acceso
 				// essa è stata semplicemnte nascosta per velocizzare
 				// l'applicazione
-				primaVisita.reset();
+				insertPaziente.getFieldCodiceFiscale().setText("");
+				insertPaziente.getFieldNome().setText("");
+				insertPaziente.getFieldCognome().setText("");
+				insertPaziente.getFieldMail().setText("");
+				insertPaziente.getFieldPassword().setText("");
+				insertPaziente.getRbtMaschio().setSelected(true);
+				insertPaziente.getFieldNickName().setText("");
+				insertPaziente.getImgCheckNickName().setVisible(false);
+				insertPaziente.getComboAnno().setSelectedIndex(0);
+				insertPaziente.getComboMese().setSelectedIndex(0);
+				insertPaziente.getComboGiorno().setSelectedIndex(0);
+				// sbianco i campi che per errore di compilazione potrebbero
+				// essere stati segnalati verde
+				insertPaziente.getFieldCodiceFiscale().setBackground(Color.WHITE);
+				insertPaziente.getFieldNome().setBackground(Color.WHITE);
+				insertPaziente.getFieldCognome().setBackground(Color.WHITE);
+				insertPaziente.getFieldMail().setBackground(Color.WHITE);
+				insertPaziente.getRbtMaschio().setBackground(getBackground());
+				insertPaziente.getRbtFemmina().setBackground(getBackground());
 
-				// RICARICO
-				// prima di tutto la variabiel Vector<Vector<?>> che ospita il
-				// risultato della query select * from LogSistema
-				// poi ricarico (refresh della tabella)
 
+				// popolamento automatico del campo cod dottore
+				try {
+					insertPaziente.getFieldCodiceDottore().setText(String.valueOf(dbInterface.getHandler()
+							.getCodDottByNickNameOnDB(
+									activeUser.getNickName())));
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
 				// rendo visibile la JinternalFrame
-				primaVisita.setVisible(true);
+				insertPaziente.setVisible(true);
 
 				// posizionamento della finestra al centro
 				// della DESKTOPWINDOW
-				primaVisita.setLocation(
-						(desktopPane.getSize().width - primaVisita.getSize().width) / 2,
-						(desktopPane.getSize().height - primaVisita.getSize().height) / 2);
+				insertPaziente.setLocation(
+						(desktopPane.getSize().width - insertPaziente.getSize().width) / 2,
+						(desktopPane.getSize().height - insertPaziente.getSize().height) / 2);
 
 			}
 		});
@@ -1000,15 +1048,15 @@ public class DesktopWindow extends JFrame implements Observer {
 				16));
 		menuAnagrafiche.add(smnPaziente);
 
-		itmInserisciPaziente = new JMenuItem("Nuovo Paziente / Prima visita");
-		itmInserisciPaziente.setMnemonic(KeyEvent.VK_I);
+		itmInserisciPaziente = new JMenuItem("Nuovo Paziente");
+		itmInserisciPaziente.setMnemonic(KeyEvent.VK_N);
 		itmInserisciPaziente.setEnabled(false);
 		itmInserisciPaziente.setIcon(new ImageIcon(DesktopWindow.class
 				.getResource("/icons/iud_insert_24.png")));
 		itmInserisciPaziente.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		smnPaziente.add(itmInserisciPaziente);
 
-		itmModificaPaziente = new JMenuItem("Modifica dati Paziente");
+		itmModificaPaziente = new JMenuItem("Modifica Paziente");
 		itmModificaPaziente.setMnemonic(KeyEvent.VK_M);
 		itmModificaPaziente.setEnabled(false);
 		itmModificaPaziente.setIcon(new ImageIcon(DesktopWindow.class
@@ -1063,8 +1111,7 @@ public class DesktopWindow extends JFrame implements Observer {
 		smnAmministratoriSistema.add(itmCancellaAmministratore);
 		// menù DIETA
 		menuDieta = new JMenu("Dieta");
-		menuDieta.setIcon(new ImageIcon(DesktopWindow.class
-				.getResource("/icons/dieta_32.jpg")));
+		menuDieta.setIcon(new ImageIcon(DesktopWindow.class.getResource("/icons/tavolozza_32.png")));
 		menuDieta
 				.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD, 18));
 		menuBar.add(menuDieta);
@@ -1096,14 +1143,17 @@ public class DesktopWindow extends JFrame implements Observer {
 		menuVisite = new JMenu("Visite");
 		menuVisite.setFont(new Font("Microsoft JhengHei UI Light", Font.BOLD,
 				18));
-		menuVisite.setIcon(new ImageIcon(DesktopWindow.class
-				.getResource("/icons/calendario_update_32.png")));
+		menuVisite.setIcon(new ImageIcon(DesktopWindow.class.getResource("/icons/libro_aperto_32.png")));
 		menuBar.add(menuVisite);
+		
+		mntmCreaVisita = new JMenuItem("Crea Visita");
+		mntmCreaVisita.setIcon(new ImageIcon(DesktopWindow.class.getResource("/icons/calendario_insert_32.png")));
+		mntmCreaVisita.setFont(new Font("Microsoft JhengHei UI Light", Font.PLAIN, 18));
+		menuVisite.add(mntmCreaVisita);
 
-		itmScegliPaziente = new JMenuItem("Scegli paziente");
+		itmScegliPaziente = new JMenuItem("Visualizza / Modifica Visite");
 		itmScegliPaziente.setEnabled(false);
-		itmScegliPaziente.setIcon(new ImageIcon(DesktopWindow.class
-				.getResource("/icons/cliente_32.png")));
+		itmScegliPaziente.setIcon(new ImageIcon(DesktopWindow.class.getResource("/icons/monitor_32.png")));
 		itmScegliPaziente.setFont(new Font("Microsoft JhengHei UI Light",
 				Font.PLAIN, 16));
 		menuVisite.add(itmScegliPaziente);
@@ -1146,9 +1196,10 @@ public class DesktopWindow extends JFrame implements Observer {
 		desktopPane.add(dietaParientChoose);
 		desktopPane.add(primaVisita);
 		desktopPane.add(visualizzaVisita);
-
 		desktopPane.add(logSistema);
-
+		desktopPane.add(insertPaziente);
+		
+		
 		// -----------------------------------------------------------------------------------
 
 		// aggiunta dello sfondo al DESKTOPPANE che altro non è che un immagine
