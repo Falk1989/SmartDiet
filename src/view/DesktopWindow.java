@@ -126,6 +126,7 @@ public class DesktopWindow extends JFrame implements Observer {
 
 		// istanzio subito gli oggeti perchè nel menu di chiamata, non mi
 		// permette di passagli "this"
+	
 
 		loginWindow = new Login();
 		loginWindow.importaDesktopWindow(this);
@@ -245,6 +246,7 @@ public class DesktopWindow extends JFrame implements Observer {
 
 				// redo visibile la jinternalframe
 				insertAmministratore.setVisible(true);
+				insertAmministratore.getFieldNickName().requestFocus();
 				// posizionamento della finestra al centro
 				// della DESKTOPWINDOW
 				insertAmministratore.setLocation(
@@ -554,7 +556,7 @@ public class DesktopWindow extends JFrame implements Observer {
 				// prima di tutto la variabiel Vector<Vector<?>> che ospita il
 				// risultato della query select * from LogSistema
 				// poi ricarico (refresh della tabella)
-
+                
 				Vector<Vector<Object>> d = dbInterface.getMatriceByLog(); // matrice
 																		// "vettore di vettore"
 																		// che
@@ -687,18 +689,41 @@ public class DesktopWindow extends JFrame implements Observer {
 		// -------------------------------------------------------
 		itemLogout.setEnabled(false); // disabilitazione della voce di loguot
 		itemLogin.setEnabled(true); // abilitazione della voce di login
+		itemEsci.setEnabled(true); // abilitazione della voce Esci
 
+		//scrittura sul log che l'utente si è sloggato
+		
+		try {
+			dbInterface.getHandler().registraLogOutOnDB(activeUser.getLevel(), activeUser.getNickName(),"L'utente si è sloggato");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		// azzeramento del MODEL
 		activeUser.setLevel("");
 		activeUser.setNickName("");
 
 		// creazione schermata di log in quanto distrutta ogni volta che ci si
 		// logga
-		loginWindow = new Login();
-		loginWindow.importaDesktopWindow(this);
-		desktopPane.add(loginWindow);
-		loginWindow.requestFocusInWindow();
+		
+		loginWindow.getFieldUsarName().setText("");
+		loginWindow.getFieldPassword().setText("");
+		
+		loginWindow.getBtnSubmit().setEnabled(true);
+		loginWindow.getImgLock().setVisible(true);
+		
+		
+		
+		loginWindow.getImgUnlock().setVisible(false);
 		loginWindow.setVisible(true);
+		loginWindow.getFieldUsarName().requestFocus();
+//		loginWindow = new Login();
+//		loginWindow.importaDesktopWindow(this);
+//		desktopPane.add(loginWindow);
+//		loginWindow.requestFocusInWindow();
+//		loginWindow.setVisible(true);
 		loginWindow
 				.setLocation(
 						(desktopPane.getSize().width - loginWindow.getSize().width) / 2,
@@ -844,6 +869,10 @@ public class DesktopWindow extends JFrame implements Observer {
 									.getSize().height) / 2);
 		} else { // è il primo accesso
 
+			//settiamo il modello ad una sorta di SUPERUSER che governa il primo accesso
+			activeUser.setLevel("SueprUser - FirstAccess");
+			activeUser.setNickName("SuperUser - FirstAccess");
+			
 			itemLogin.setEnabled(false);
 
 			firstEnterWindow.setVisible(true);
@@ -971,7 +1000,7 @@ public class DesktopWindow extends JFrame implements Observer {
 				16));
 		menuAnagrafiche.add(smnPaziente);
 
-		itmInserisciPaziente = new JMenuItem("Inserisci");
+		itmInserisciPaziente = new JMenuItem("Nuovo Paziente / Prima visita");
 		itmInserisciPaziente.setMnemonic(KeyEvent.VK_I);
 		itmInserisciPaziente.setEnabled(false);
 		itmInserisciPaziente.setIcon(new ImageIcon(DesktopWindow.class
@@ -979,7 +1008,7 @@ public class DesktopWindow extends JFrame implements Observer {
 		itmInserisciPaziente.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		smnPaziente.add(itmInserisciPaziente);
 
-		itmModificaPaziente = new JMenuItem("Modifica");
+		itmModificaPaziente = new JMenuItem("Modifica dati Paziente");
 		itmModificaPaziente.setMnemonic(KeyEvent.VK_M);
 		itmModificaPaziente.setEnabled(false);
 		itmModificaPaziente.setIcon(new ImageIcon(DesktopWindow.class
@@ -987,7 +1016,7 @@ public class DesktopWindow extends JFrame implements Observer {
 		itmModificaPaziente.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		smnPaziente.add(itmModificaPaziente);
 
-		itmCancellaPaziente = new JMenuItem("Cancella");
+		itmCancellaPaziente = new JMenuItem("Cancella Paziente");
 		itmCancellaPaziente.setMnemonic(KeyEvent.VK_C);
 		itmCancellaPaziente.setEnabled(false);
 		itmCancellaPaziente.setIcon(new ImageIcon(DesktopWindow.class
@@ -1253,6 +1282,10 @@ public class DesktopWindow extends JFrame implements Observer {
 
 	public JMenuItem getItemLogout() {
 		return itemLogout;
+	}
+	
+	public JMenuItem getItemEsci(){
+		return itemEsci;
 	}
 
 	public JDesktopPane getDesktopPane() {

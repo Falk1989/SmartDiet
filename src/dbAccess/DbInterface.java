@@ -33,18 +33,20 @@ public class DbInterface{
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		
 		}
 		
 
 		return result;
 	}
 
-	public boolean registraAdmin(String level, String user, String password) {
+	public boolean registraAdmin(String profilo, String nickname,
+			String level, String user, String password) {
 		boolean result = false;
 
 		try {
 			// .....
-			result = handler.createAdminOnDB(level, user, password);
+			result = handler.createAdminOnDB(profilo, nickname,level, user, password);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,12 +54,13 @@ public class DbInterface{
 		return result;
 	}
 	
-	public boolean modificaAdmin(String oldNickName, String newNickName, String password) {
+	public boolean modificaAdmin(String profilo, String nickname,
+			String oldNickName, String newNickName, String password) {
 		boolean result = false;
 
 		try {
 			// .....
-			result = handler.modificaAdminOnDB(oldNickName, newNickName,  password);
+			result = handler.modificaAdminOnDB(profilo, nickname, oldNickName, newNickName,  password);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,12 +68,12 @@ public class DbInterface{
 		return result;
 	}
 
-	public boolean cancellaAdmin(String user) {
+	public boolean cancellaAdmin(String profilo, String nickname,String user) {
 		boolean result = false;
 
 		try {
 			// .....
-			result = handler.cancellaAdminOnDB(user);
+			result = handler.cancellaAdminOnDB(profilo, nickname,user);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,7 +111,7 @@ public class DbInterface{
 		return result;
 	}
 	
-	public boolean modificaDottore(
+	public boolean modificaDottore(String profilo, String user,
 			String level,
 			String oldNickName,
 			String newNickName, 
@@ -125,7 +128,7 @@ public class DbInterface{
 
 		try {
 			// .....
-			result = handler.modificaDottoreOnDB(level,
+			result = handler.modificaDottoreOnDB(profilo, user,level,
 					oldNickName,
 					newNickName, 
 					pwd, 
@@ -144,12 +147,12 @@ public class DbInterface{
 		return result;
 	}
 
-	public boolean cancellaDottore(String user) {
+	public boolean cancellaDottore(String profilo, String nickname,String user) {
 		boolean result = false;
 
 		try {
 			// .....
-			result = handler.cancellaDottoreOnDB(user);
+			result = handler.cancellaDottoreOnDB(profilo, nickname,user);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,6 +252,10 @@ public class DbInterface{
  		
 	}
 	
+	public DataHandler getHandler() {
+		return handler;
+	}
+
 	public Vector<String> getInfoAboutDoctor(String user ){
 		Vector<String> result = null;
 
@@ -272,6 +279,40 @@ public class DbInterface{
 		try {
 			// .....
 			result =  handler.getMatriceByLogOnDB();
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	
+ 		
+	}
+	
+	public Vector<Vector<Object>> getMatriceByLogFiltroProfili(String profilo){
+		Vector<Vector<Object>> result = null;
+
+		try {
+			// .....
+			result =  handler.getMatriceByLogFiltroProfiliOnDB(profilo);
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	
+ 		
+	}
+	
+	public Vector<Vector<Object>> getMatriceByLogFiltroNickName(String nickname){
+		Vector<Vector<Object>> result = null;
+
+		try {
+			// .....
+			result =  handler.getMatriceByLogFiltroNickNameOnDB(nickname);
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -429,10 +470,36 @@ public class DbInterface{
 		}
 	
 	
-	public boolean registraCredenziali(String level, String user, String password) {
-		return registraAdmin(level, user, password);
+	public boolean registraCredenziali(String profilo, String nickname, String level, String user, String password) {
+		return registraAdmin(profilo, nickname, level, user, password);
 
 	}
+	
+	
+	public Vector<String> getProfileByLog(){
+		Vector<String> result = null;
 
+		try {
+			// .....
+			result = handler.getProfileByLogOnDB();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		}
+
+	public Vector<String> getNickNameByLog(){
+		Vector<String> result = null;
+
+		try {
+			// .....
+			result = handler.getNickNameByLogOnDB();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+		}
 	
 }

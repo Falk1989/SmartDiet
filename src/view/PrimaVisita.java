@@ -29,6 +29,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JRadioButton;
 
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -789,6 +791,17 @@ public class PrimaVisita extends JInternalFrame {
 				Font.BOLD, 18));
 		btnConfermaESalva.setBounds(329, 514, 232, 40);
 		getContentPane().add(btnConfermaESalva);
+	
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+				desktopWindow.getItemLogout().setEnabled(true);
+				desktopWindow.getAllertWindow().setVisible(false);
+			}
+		});
+
+	
+	
 	}
 
 	// METODI VARI

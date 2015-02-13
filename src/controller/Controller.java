@@ -673,6 +673,8 @@ public class Controller {
 		{
 			// inizia la procedura di modifica su DB
 			esitoScrittura = view.getDbInterface().modificaAdmin(
+					view.getActiveUser().getLevel(),
+					view.getActiveUser().getNickName(),
 					(String) view.getUpdateAmministratore().getCombNickName().getSelectedItem(),
 					view.getUpdateAmministratore().getFieldNewNickName().getText(),
 					new String(view.getUpdateAmministratore().getFieldNewPassword().getPassword()));
@@ -723,6 +725,8 @@ public class Controller {
 		{
 			esitoScrittura = view.getDbInterface()
 					.registraCredenziali(
+							view.getActiveUser().getLevel(),
+							view.getActiveUser().getNickName(),
 							(String) view.getInsertAmministratore()
 									.getComboProfilo().getSelectedItem(),
 							view.getInsertAmministratore().getFieldNickName()
@@ -782,6 +786,8 @@ public class Controller {
 				if (answer == 0) // ok confermo che voglio cancellarmi
 				{
 					esitoScrittura = view.getDbInterface().cancellaAdmin(
+							view.getActiveUser().getLevel(),
+							view.getActiveUser().getNickName(),
 							(String) view.getDeleteAmministratore()
 									.getCombNickName().getSelectedItem());
 					if (esitoScrittura == true) {
@@ -803,6 +809,8 @@ public class Controller {
 					// amministratori
 			{
 				esitoScrittura = view.getDbInterface().cancellaAdmin(
+						view.getActiveUser().getLevel(),
+						view.getActiveUser().getNickName(),
 						(String) view.getDeleteAmministratore()
 								.getCombNickName().getSelectedItem());
 				if (esitoScrittura == true)
@@ -921,6 +929,8 @@ public class Controller {
 		{
 
 			esitoScrittura = view.getDbInterface().modificaDottore(
+					view.getActiveUser().getLevel(),
+					view.getActiveUser().getNickName(),
 					(String) view.getUpdateDottore().getComboProfilo()
 							.getSelectedItem(),
 					view.getActiveUser().getNickName(),
@@ -994,6 +1004,8 @@ public class Controller {
 		// inizia la procedura di cancellazione su DB
 
 		esitoScrittura = view.getDbInterface().cancellaDottore(
+				view.getActiveUser().getLevel(),
+				view.getActiveUser().getNickName(),
 				(String) view.getDeleteDottore().getCombNickName()
 						.getSelectedItem());
 
@@ -1013,13 +1025,7 @@ public class Controller {
 
 				view.getItemLogin().setEnabled(false);
 				view.getItemLogout().setEnabled(true);
-				// caricamento in maschera di User e Profilo
-				// desktopWindow.getLblUsers().setText(fieldUsarName.getText());
-				// desktopWindow.getLblProfile().setText(dbInterface.getProfileByNickname(fieldUsarName
-				// .getText()));
-				// desktopWindow.setUtente(desktopWindow.getLblUsers().getText());
-				// desktopWindow.setProfilo(desktopWindow.getLblProfile().getText());
-
+				
 				// MODIFICO SOLO IL
 				// MODEL----------------------------------------------
 				view.getActiveUser().setLevel(
@@ -1038,7 +1044,8 @@ public class Controller {
 								view.getDbInterface().getProfileByNickname(
 										view.getLoginWindow()
 												.getFieldUsarName().getText())));
-
+                //disabilitazione di ESCI perchè ora che si è loggato prima si deve sloggare per uscire
+				view.getItemEsci().setEnabled(false);
 				new Thread(new Runnable() {
 
 					@Override
@@ -1056,20 +1063,20 @@ public class Controller {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
-						view.getLoginWindow().dispose();
+						view.getLoginWindow().hide();
 
 					}
 				}).start();
 
 			} else {
-				view.getLoginWindow().getFieldUsarName().requestFocus();
+				
 				view.getAllertWindow().setVisible(true);
 				view.getAllertWindow()
 						.aggiungiMessaggio(
 								"Credenziali NON valide!!! \nUsername o Password ERRATE!!! \nVerificare ed in caso contattale l'amministratore di sistema...");
 				view.getLoginWindow().getFieldUsarName().setText("");
 				view.getLoginWindow().getFieldPassword().setText("");
+				view.getLoginWindow().getFieldUsarName().requestFocus();
 
 				view.getAllertWindow().setLocation(
 						(view.getSize().width - view.getAllertWindow()
@@ -1096,6 +1103,8 @@ public class Controller {
 		{
 			// inizia la procedura di caricamento su DB
 			esitoScrittura = view.getDbInterface().registraCredenziali(
+					view.getActiveUser().getLevel(),
+					view.getActiveUser().getNickName(),
 					(String) view.getFirstEnterWindow().getComboProfilo()
 							.getSelectedItem(),
 					view.getFirstEnterWindow().getFieldUsarName().getText(),

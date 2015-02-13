@@ -5,14 +5,11 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -26,10 +23,10 @@ public class FirstEnter extends JInternalFrame {
 	private DesktopWindow desktopWindow;
 	private JTextField fieldUsarName;
 	private JPasswordField fieldPassword;
-	private JLabel imgUnlock = new JLabel("");
+
 	private DbInterface dbInterface = new DbInterface();
 	private JButton btnSubmit;
-	private JDialog jd;
+
 	private JComboBox comboProfilo;
 
 	/**
@@ -44,6 +41,10 @@ public class FirstEnter extends JInternalFrame {
 				// --------listener non implementabili nel controller
 				// ----------------------------------------------------------------------------
 
+				
+			
+				
+				
 
 	} // fine costruttore
 	
