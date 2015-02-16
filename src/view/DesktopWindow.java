@@ -102,6 +102,7 @@ public class DesktopWindow extends JFrame implements Observer {
 	private DeleteDottore deleteDottore;
 	
 	private InsertPaziente insertPaziente;
+	private UpdatePaziente updatePaziente;
 	
 	private ScegliVisita scegliVisita;
 	private VisualizzaVisita visualizzaVisita;
@@ -176,7 +177,10 @@ public class DesktopWindow extends JFrame implements Observer {
 		
 		insertPaziente = new InsertPaziente();
 		insertPaziente.importaDesktopWindow(this);
-
+		
+		updatePaziente = new UpdatePaziente();
+		updatePaziente.importaDesktopWindow(this);
+		
 		// ----------------------------------------------------------------------------
 		// disegno la finestra
 		drawGUI();
@@ -571,6 +575,9 @@ public class DesktopWindow extends JFrame implements Observer {
 			}
 		});
 
+		
+	
+		
 		// in ascolto su quando viene cliccata la voce di Creazione manuale
 		// Dieta
 		// del menu DIETA
@@ -712,6 +719,49 @@ public class DesktopWindow extends JFrame implements Observer {
 			}
 		});
 
+		itmModificaPaziente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// disabilito la voce di logout dal menu file
+				itemLogout.setEnabled(false);
+
+				// AZZERO i campi della jinternalframe perchè all'ultimo acceso
+				// essa è stata semplicemnte nascosta per velocizzare
+				// l'applicazione
+				updatePaziente.getFieldCodiceFiscale().setText("");
+				updatePaziente.getFieldNome().setText("");
+				updatePaziente.getFieldCognome().setText("");
+				updatePaziente.getFieldMail().setText("");
+				updatePaziente.getFieldPassword().setText("");
+				updatePaziente.getRbtMaschio().setSelected(true);
+				updatePaziente.getFieldNickName().setText("");
+				updatePaziente.getImgCheckNickName().setVisible(false);
+				updatePaziente.getComboAnno().setSelectedIndex(0);
+				updatePaziente.getComboMese().setSelectedIndex(0);
+				updatePaziente.getComboGiorno().setSelectedIndex(0);
+
+				// popolamento automatico del campo cod dottore
+				try {
+					updatePaziente.getFieldCodiceDottore().setText(String.valueOf(dbInterface.getHandler()
+							.getCodDottByNickNameOnDB(
+									activeUser.getNickName())));
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				// rendo visibile la JinternalFrame
+				updatePaziente.setVisible(true);
+
+				// posizionamento della finestra al centro
+				// della DESKTOPWINDOW
+				updatePaziente.setLocation(
+						(desktopPane.getSize().width - updatePaziente.getSize().width) / 2,
+						(desktopPane.getSize().height - updatePaziente.getSize().height) / 2);
+
+			}
+		});
+		
 		// ----------------fine lista listener---------------------------
 
 	}// FINE DEL COSTRUTTORE
@@ -1209,6 +1259,8 @@ public class DesktopWindow extends JFrame implements Observer {
 		desktopPane.add(visualizzaVisita);
 		desktopPane.add(logSistema);
 		desktopPane.add(insertPaziente);
+		desktopPane.add(updatePaziente);
+		
 		
 		
 		// -----------------------------------------------------------------------------------
