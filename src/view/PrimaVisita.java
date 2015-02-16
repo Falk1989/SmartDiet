@@ -116,6 +116,7 @@ public class PrimaVisita extends JInternalFrame {
 	private JPanel panelSuper;
 	private JPanel panelCredenziali;
 	private JTextField fieldNickName;
+	private JTextField fieldPassword;
 	
 
 	public JPanel getPanelSuper() {
@@ -375,7 +376,7 @@ public class PrimaVisita extends JInternalFrame {
 		panelCredenziali.add(lblPassword);
 		lblPassword.setFont(new Font("Tahoma", Font.BOLD, 18));
 
-		JTextField fieldPassword = new JPasswordField();
+		fieldPassword = new JPasswordField();
 		fieldPassword.setEditable(false);
 		fieldPassword.setBounds(332, 77, 271, 34);
 		panelCredenziali.add(fieldPassword);
@@ -914,6 +915,7 @@ public class PrimaVisita extends JInternalFrame {
 				btnConfermaESalva.setEnabled(true);
 				btnPrimaVisita.setEnabled(false);
 				btnSuccessiveVisite.setEnabled(false);
+				reset();
 				comboPazienti.setEnabled(false);
 			}
 		});
@@ -1018,6 +1020,12 @@ public class PrimaVisita extends JInternalFrame {
 		} else {
 			nameText.setBackground(Color.WHITE);
 		}
+		if (mailtextField.getText().equals("")) {
+			valor = false;
+			mailtextField.setBackground(Color.GREEN);
+		} else
+			mailtextField.setBackground(Color.WHITE);
+
 		if (cognomeText.getText().equals("")) {
 			valor = false;
 			cognomeText.setBackground(Color.GREEN);
@@ -1128,6 +1136,9 @@ public class PrimaVisita extends JInternalFrame {
 		noteAttivitaText.setText("");
 		noteDietaArea.setText("");
 		nonPiaceText.setText("");
+		mailtextField.setText("");
+		fieldNickName.setText("");
+		fieldPassword.setText("");
 	}
 
 	public void inizializzaStack(Stack<String> x) {
