@@ -851,12 +851,14 @@ public class PrimaVisita extends JInternalFrame {
 			}
 		});
 
+
 		btnPrimaVisita.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelSuper.setVisible(true);
 				btnConfermaESalva.setEnabled(true);
 				btnPrimaVisita.setEnabled(false);
 				btnSuccessiveVisite.setEnabled(false);
+				comboPazienti.setEnabled(false);
 			}
 		});
 		

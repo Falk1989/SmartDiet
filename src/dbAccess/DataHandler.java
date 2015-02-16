@@ -1355,8 +1355,9 @@ public class DataHandler {
 			Statement statement = connection.createStatement();
 			statement.setQueryTimeout(30); // set timeout to 30 sec.
 			// ------------------------------------------------------------------------
-			String query = "select Nome, Cognome  from Pazienti where CodDottore = "
-					+ code + " order by Cognome, Nome";
+			String query = "select p.nome, p.cognome from Pazienti as p, visita as v, dottori as d "
+					+ "where v.CF = p.CodiceFiscale and p.CodDottore= d.CodDottore and p.CodDottore = "
+					+ code + " order by p.Cognome, p.Nome";
 
 			rs = statement.executeQuery(query);
 			String insert = null;

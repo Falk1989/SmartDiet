@@ -530,6 +530,7 @@ public class DesktopWindow extends JFrame implements Observer {
 				primaVisita.getBtnSuccessiveVisite().setEnabled(true);
 				primaVisita.getBtnConfermaESalva().setEnabled(false);
 				primaVisita.getPanelSuper().setVisible(false);
+				primaVisita.getComboPazienti().setEnabled(false);
 
 				// rendo visibile la JinternalFrame
 				primaVisita.setVisible(true);
